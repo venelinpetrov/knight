@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dqucbc8xuejcd"]
+
+[ext_resource type="Script" uid="uid://cx5ovmery11mr" path="res://Scripts/PlayerController.gd" id="1_cvnsp"]
+[ext_resource type="Texture2D" uid="uid://cghfo48xt24ri" path="res://Assets/Tiles/tile_0096.png" id="2_6t5aa"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nlmxq"]
+radius = 4.0
+height = 10.0
+
+[node name="Player" type="CharacterBody2D" unique_id=388748426]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_cvnsp")
+
+[node name="Tile0096" type="Sprite2D" parent="." unique_id=1468628214]
+texture = ExtResource("2_6t5aa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1529796468]
+position = Vector2(0, 3)
+shape = SubResource("CapsuleShape2D_nlmxq")
