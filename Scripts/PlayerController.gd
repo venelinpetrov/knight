@@ -7,10 +7,12 @@ extends CharacterBody2D
 
 @export var dash_speed: float = 520.0
 @export var dash_duration: float = 0.14
+@export var dash_cooldown = 20
 
 var _is_dashing := false
 var _dash_timer := 0.0
 var _dash_dir := Vector2.RIGHT
+var _dash_cooldown_timer := 0
 
 func _physics_process(delta: float) -> void:
 	_update_aim()
@@ -45,15 +47,25 @@ func _start_dash() -> void:
 		_dash_dir = to_mouse.normalized() if to_mouse.length() > 0.01 else Vector2.RIGHT
 	_is_dashing = true
 	_dash_timer = dash_duration
+	_dash_cooldown_timer = dash_cooldown
 	
 func _end_dash() -> void:
 	_is_dashing = false
 
 func _update_dash(delta: float) -> void:
+	if _dash_cooldown_timer > 0.0:
+		_dash_cooldown_timer -= delta
+
 	if _is_dashing:
 		_dash_timer -= delta
 		if _dash_timer <= 0.0:
 			_end_dash()
 		return
-	if Input.is_action_just_pressed("dash"):
+
+	if Input.is_action_just_pressed("dash") and _dash_cooldown_timer <= 0.0:
 		_start_dash()
+		
+func get_dash_ratio() -> float:
+	if _dash_cooldown_timer <= 0.0:
+		return 1.0
+	return clampf(1.0 - _dash_cooldown_timer / dash_cooldown, 0.0, 1.0)
